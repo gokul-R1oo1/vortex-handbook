@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block current_user_content %}
+    <div class="container-fluid content">
+        
+        <!-- Flash message -->
+        {% include '_flash_message.html' %}
+        <!-- End of flash message -->
+
+        <!-- Page title -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="mt-4 mb-4">{{ title }} ({{ all_registered_Employees }})</h1>
+            </div>
+        </div>
+        <!-- End of page title -->
+
+        <!-- List of all registered admins -->
+        <div class="row users">                
+            <div class="col-md-12">
+                <!-- Admin list -->
+                <div class="table-responsive">
+                    <table id="data" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Age</th>
+                                <th>School</th>
+                                <th>Coding Experience</th>
+                                <th>Program</th>
+                                <th>Program Schedule</th>
+                                <th>Cohort</th>
+                                <th>manager</th>
+                                <th>2FA Status</th>
+                                <th>Registration Date</th>
+                                <th>Email</th>
+                                <!-- Only accessible by admins -->
+                                {% if current_user.type == 'admin' %}                                    
+                                    <th>Deactivate</th>
+                                    <th>Delete</th>
+                                {% endif %}
+                                <!-- End of admin access -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Get all admins from the database -->
+                            {% for Employee in Employees %}
+                                <tr>
+
+                                    <td><img src="{{ Employee.avatar(25) }}"></td>
+                                    <td>{{ Employee.first_name }} {{ Employee.last_name }}</td>
+                                    <td>{{ Employee.username }}</td>
+                                    <td>{{ Employee.email }}</td>
+                                    <td><a href="https://wa.me/{{ Employee.phone_number | replace('+', '') }}?text=Hello%20From%20Vortex" target="_blank">{{ Employee.phone_number }}</a></td>
+                                    <td>{{ Employee.age }}</td>
+                                    <td>{{ Employee.school }}</td>
+                                    <td>{{ Employee.coding_experience }}</td>
+                                    <td>{{ Employee.program }}</td>
+                                    <td>{{ Employee.program_schedule }}</td>
+                                    <td>{{ Employee.cohort }}</td>
+                                    <td><strong>{{ Employee.manager.first_name }} {{ Employee.manager.last_name }}</strong></td>
+                                    {% if Employee.two_factor_enabled() %}
+                                        <td><span class="label label-info"> Enabled </span></td>
+                                    {% else %}
+                                        <td><span class="label label-info"> Disabled </span></td>
+                                    {% endif %}
+                                    
+                                    <td>{{ moment(Employee.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>
+                                    
+                                    
+                                    <!-- Private email -->
+                                    <td>
+                                        {% if Employee.email == current_user.email %}
+                                            <a 
+                                                href=" {{ url_for('compose_direct_email_to_Employee', email=Employee.email) }} " 
+                                                class="btn link_disabled" 
+                                                style="background-color: #0d8a41; color: white;">
+                                                Send Private Email
+                                            </a>
+                                        {% else %}
+                                            <a 
+                                                href=" {{ url_for('compose_direct_email_to_Employee', email=Employee.email) }} " 
+                                                class="btn" 
+                                                style="background-color: #0d8a41; color: white;">
+                                                    Send private email
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <!-- End of private email -->
+
+                                    <!-- Only accessible by admins -->
+                                    {% if current_user.type == 'admin' %}
+
+                                        <!-- ========================= -->
+                                        <!-- Deactivate account -->
+                                        <!-- ========================= -->
+                                        <td>
+                                            <!-- If the admin is active -->
+                                            {% if Employee.active == True %}
+
+                                                <!-- If the manager is the same as the current user -->
+                                                <!-- They cannot deactivate themselves -->
+                                                <!-- Link is inactive -->
+                                                {% if current_user.username == Employee.username %}
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#adminModalCenter">
+                                                        Deactivate
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="EmployeeModalCenter" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="EmployeeModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is not permanent. It can be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('deactivate_Employee', username=Employee.username) }} " 
+                                                                        class="btn link_disabled" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Deactivate Employee
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete admin modal -->
+
+                                                <!-- If the admin is not the same as the current user -->
+                                                <!-- They can deactivate this admin -->
+                                                <!-- Link is active -->
+                                                {% else %}                                            
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#Employee2ModalCenter">
+                                                        Deactivate
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="Employee2ModalCenter" tabindex="-1" role="dialog" aria-labelledby="Employee2ModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="Employee2ModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is not permanent. It can be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('deactivate_Employee', username=Employee.username) }} " 
+                                                                        class="btn" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Deactivate Employee
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete admin modal -->
+                                                {% endif %}
+                                            {% endif %}
+
+                                            <!-- If an manager's account is deactivated -->
+                                            <!-- Reactivate link is active -->
+                                            {% if Employee.active == False %}
+                                                <span>
+                                                    <a 
+                                                        class="btn" 
+                                                        style="background-color: orange; color: white;" 
+                                                        href=" {{ url_for('reactivate_Employee', username=Employee.username) }} "> 
+                                                        Reactivate
+                                                    </a>
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <!-- ========================= -->
+                                        <!-- End of reactivate account -->
+                                        <!-- ========================= -->
+
+                                        <!-- ============== -->
+                                        <!-- Delete account -->
+                                        <!-- ============== -->
+                                        <td>
+                                            <!-- A Employee's account status needs to be active to delete an account -->
+                                            {% if Employee.active == True %}
+
+                                                <!-- manager cannot delete self -->
+                                                {% if current_user.username == Employee.username %}
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#{{Employee.username}}ModalCenter">
+                                                        Delete
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="{{Employee.username}}ModalCenter" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="EmployeeModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is permanent. It cannot be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('delete_Employee', username=Employee.username) }} " 
+                                                                        class="btn link_disabled" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Delete Employee
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete Employee modal -->
+                                                
+                                                    <!-- manager can delete others -->
+                                                {% else %}                                            
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#{{Employee.username}}2DeleteModalCenter">
+                                                        Delete
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="{{Employee.username}}2DeleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="Employee2ModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="Employee2ModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is permanent. It cannot be reversed. <br><br>
+                                                                    {% if current_user.department != 'Superadmin' %}
+                                                                        <a 
+                                                                            href=" {{ url_for('delete_Employee', username=Employee.username) }} " 
+                                                                            class="btn link_disabled" 
+                                                                            style="background-color: red; color: white;">
+                                                                                Delete Employee
+                                                                        </a>
+                                                                    {% endif %}
+                                                                    {% if current_user.department == 'Superadmin' %}
+                                                                        <a 
+                                                                            href=" {{ url_for('delete_Employee', username=Employee.username) }} " 
+                                                                            class="btn" 
+                                                                            style="background-color: red; color: white;">
+                                                                                Delete Employee
+                                                                        </a>
+                                                                    {% endif %}
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- ========================= -->
+                                                    <!-- End of delete Employee modal -->
+                                                    <!-- ========================= -->
+
+                                                {% endif %}
+                                            {% endif %}
+
+                                            <!-- If an Employee's status is false -->
+                                            {% if Employee.active == False %}
+                                                <span>
+                                                    <a 
+                                                        class="btn" 
+                                                        style="background-color: orange; color: white;" 
+                                                        href=" {{ url_for('delete_Employee', username=Employee.username) }} "> 
+                                                        Delete
+                                                    </a>
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <!-- End of delete account -->
+                                    {% endif %}
+                                    <!-- End if Employee access -->
+                                </tr>
+                            {% endfor %}
+                            <!-- End of getting all Employee from the database -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End of list of all registered admins -->
+    </div>
+{% endblock %}
+
+{% block current_user_scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#data').DataTable();
+        });
+    </script>
+{% endblock %}
