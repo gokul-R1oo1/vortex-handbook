@@ -1,0 +1,100 @@
+2024-08-13 11:32:36,139 ERROR: Exception on /login [POST] [in F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: manager
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "F:\new\Vortexhandbook-online-using-flask-main\app\routes.py", line 180, in login
+    user = User.query.filter_by(username=form.username.data).first()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\query.py", line 2824, in first
+    return self.limit(1)._iter().first()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\query.py", line 2916, in _iter
+    result = self.session.execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 1714, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\util\compat.py", line 211, in raise_
+    raise exception
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: manager
+[SQL: SELECT user.id AS user_id, user.first_name AS user_first_name, user.last_name AS user_last_name, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash, user.phone_number AS user_phone_number, user.verification_phone AS user_verification_phone, user.active AS user_active, user.delete_account AS user_delete_account, user.registered_at AS user_registered_at, user.type AS user_type, student.id AS student_id, student.age AS student_age, student.school AS student_school, student.coding_experience AS student_coding_experience, student.program AS student_program, student.program_schedule AS student_program_schedule, student.cohort AS student_cohort, student.manager_id AS student_manager_id, teacher.id AS teacher_id, teacher.course AS teacher_course, teacher.current_residence AS teacher_current_residence, manager.id AS manager_id, manager.current_residence AS manager_current_residence, admin.id AS admin_id, admin.current_residence AS admin_current_residence, admin.department AS admin_department 
+FROM user LEFT OUTER JOIN student ON user.id = student.id LEFT OUTER JOIN teacher ON user.id = teacher.id LEFT OUTER JOIN manager ON user.id = manager.id LEFT OUTER JOIN admin ON user.id = admin.id 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('tastebolder', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-08-13 11:32:47,842 ERROR: Exception on /request-password-reset [POST] [in F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: manager
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "F:\new\Vortexhandbook-online-using-flask-main\app\routes.py", line 226, in request_password_reset
+    user = User.query.filter_by(email=form.email.data).first()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\query.py", line 2824, in first
+    return self.limit(1)._iter().first()
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\query.py", line 2916, in _iter
+    result = self.session.execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 1714, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\util\compat.py", line 211, in raise_
+    raise exception
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "F:\new\Vortexhandbook-online-using-flask-main\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: manager
+[SQL: SELECT user.id AS user_id, user.first_name AS user_first_name, user.last_name AS user_last_name, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash, user.phone_number AS user_phone_number, user.verification_phone AS user_verification_phone, user.active AS user_active, user.delete_account AS user_delete_account, user.registered_at AS user_registered_at, user.type AS user_type, student.id AS student_id, student.age AS student_age, student.school AS student_school, student.coding_experience AS student_coding_experience, student.program AS student_program, student.program_schedule AS student_program_schedule, student.cohort AS student_cohort, student.manager_id AS student_manager_id, teacher.id AS teacher_id, teacher.course AS teacher_course, teacher.current_residence AS teacher_current_residence, manager.id AS manager_id, manager.current_residence AS manager_current_residence, admin.id AS admin_id, admin.current_residence AS admin_current_residence, admin.department AS admin_department 
+FROM user LEFT OUTER JOIN student ON user.id = student.id LEFT OUTER JOIN teacher ON user.id = teacher.id LEFT OUTER JOIN manager ON user.id = manager.id LEFT OUTER JOIN admin ON user.id = admin.id 
+WHERE user.email = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('gokul512rg@gmail.com', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
