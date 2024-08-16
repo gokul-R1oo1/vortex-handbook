@@ -1,168 +1,102 @@
 
 
+Vortex provides an intuitive and robust platform for managing online learning experiences. It offers features that address the specific needs of administrators, teachers, managers, and employees, ensuring a seamless educational experience.
 
-## Overview
+User Roles and Responsibilities
+Administrators:
 
-Built with love and from experience, this project summarizes the ideas that may be pivotal to any learning center, especially if conducted online. It covers the needs of four types of users:
+Control user access by registering, managing, deactivating, or deleting users.
+Gain an overarching view of platform activities, including teacher performance and feedback from parents.
+Manage and upload lesson content.
+Teachers:
 
-- Administrators:
-    - You control who uses the platform, by registering them, managing their data, temporarily deactivating users or permanently deleting them and their data.
-    - You get a bird's eye view of the entire business: what teachers are doing, what Employees are doing, what paretnts have to say
-    - You manage lesson contents by uploading them to the platform
+Guide employees through lessons.
+Mark attendance and validate employee participation.
+Assess and grade employee projects.
+Managers:
 
-- Teachers:
-    - Tasked with guiding Employees through the lessons
-    - They mark Employees' attendance, compounded to ratify each Employee's participation.
-    - They assess their submitted lesson projects
-    - They grade Employees projects
+Register employees after admin approval, ensuring accurate employee information.
+Monitor employee attendance and performance.
+Access detailed performance reports for each chapter.
+Employees:
 
-- Managers:
-    - They register their studensts once approved by the admin. Done so so that Employee information is accurate.
-    - They see how well their staffs attendance has been
-    - They get to see how they perform in each chapter
+Access and complete lessons in the prescribed order.
+Progress to subsequent lessons is dependent on performance in current lessons.
+Features
+Multi-user support with defined roles
+Newsletter subscription for periodic updates
+Basic user authentication
+Two-factor authentication via Twilio
+Email communication using Twilio SendGrid
+Technologies Used
+Backend: Flask micro-framework (Python)
+Frontend: JavaScript, DatatableJS
+Authentication: Twilio Verify API (Two-factor authentication)
+Email: Twilio SendGrid
+Deployment: Gunicorn
+Database: PostgreSQL with fallback to SQLite
+ORM: Flask-SQLAlchemy
+Migrations: Flask-Migrate
+Time Formatting: Flask-Moment
+Testing: Pytest, pytest-cov
+Phone Number Management: Phonenumbers package
+Application Details
+Newsletter
+Users can subscribe to receive periodic updates.
+Registration requires email verification.
+Pre-scheduled emails are sent automatically to subscribers.
+Admins can send personalized emails to individual subscribers for enhanced communication.
+Multi-user Support
+Superadmin: A unique role with comprehensive control, including adding other admins and teachers.
+Manager Registration: Accessible from the homepage, allowing anonymous users to register as managers.
+Employee Registration: Performed by registered managers, with login details sent via email.
+Teacher Registration: Conducted by admins, with corresponding email notifications.
+Admin Registration: Additional admins can be registered by logged-in admins, following the same process as teacher registration.
+Testing Locally
+To run the application locally:
 
-- Employees:
-    - They have access to lessons
-    - They are required to complete the lessons in the order they appear
-    - Access to subsequent lessons is dependant on the performance on the current chapter/lesson
+Clone the repository:
 
+bash
+Copy code
+$ git clone https://github.com/gokul-R1oo1/vortex-handbook.git
+$ cd Vortex-handbook
+Create and activate a virtual environment:
 
-### Table of Contents
+bash
+Copy code
+# Using virtualenvwrapper
+$ mkvirtualenv venv
 
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Additional Details](#additional-details)
-- [Application Details](#application-details)
-    - [Newsletter](#newsletter)
-    - [Multi-user Support](#multi-user-support)
-- [Testing It Locally](#testing-it-locally)
-- [Areas of Improvement](#areas-of-improvement)
+# Or using Python's venv module
+$ python3 -m venv venv
+$ source venv/bin/activate
+Install dependencies:
 
+bash
+Copy code
+(venv) $ pip install -r requirements.txt
+Set up environment variables:
 
-## Features
+bash
+Copy code
+(venv) $ cp .env-template .env
+Start the Flask server:
 
-- Multi-user support
-- Newsletter subscription
-- Basic user authentication
-- Two-factor authentication
-- Sending of emails from the app
+bash
+Copy code
+(venv) $ flask run
+Access the application:
+Open http://127.0.0.1:5000 in your browser.
 
-
-## Technologies Used
-
-- Flask micro-framework
-- Python for programming
-- Sprinkles of JavaScript for front-end design
-- Twilio Verify API for two-factor authentication
-- Twilio SendGrid for email support
-- Gunicorn for live app deployment
-- Phonenumbers package for beautiful phone numbers
-- DatatableJS for interactive tables
-- Pytest and pytest-cov for testing
-- Psycopg2 for postgresql adaptability
-- Postgresql database or fallback to SQLite database
-- Flask-sqlalchemy ORM for database management
-- Flask-migrate for database migrations
-- Flask-moment for time formatting
-
-
-
-## Application Details
-
-### Newsletter:
-
-- A user interested in receiving periodic updates about Vortex can sign up for the newsletter service.
-- Registration is limited to those who verify their email addresses only
-![How newsletter works]
-- The application automatically sends pre-prepared emails to them at set intervals
-![Regular emails]
-- Admin can email an individual newsletter subscriber to enhance one-on-one communication (optional)
-![Admin talks with subscriber]
-
-
-### Multi-user Support
-
->The application features a **superadmin**, who cannot be deleted. This superadmin is the source of all activities in the app. For example:
->
->- All teachers are added by the superadmin
->- Other admins, with limited powers, are also added by the superadmin
->
->To login as a superadmin, you can use this credentials:
->
->- Visit: **https://Vortex.onrender.com/login**
->- Username: **tastebolder**
->- Password: **Vortex123**
-
-- Manager Registration (anonymous user can register as a manager)
-    - Done from the home page **https://register/Manager**
-    ![Register manager]
-
-- Employee Registration (done ONLY by a registered manager - designed so to allow for their association)
-    - Done from the logged-in manager's account **https://http://127.0.0.1:5000/login**
-    ![Register Employee]
-    - An email will be sent to the Employee to check their login details
-    ![Employee login details]
-
-- Teacher Registration (done only by a logged in admin - not necessarily the superadmin)
-    - Done from the logged-in admin's account **https://Vortex.onrender.com/register/teacher**
-    ![Register teacher](/app/static/images/readme/register_teacher.gif)
-    - An email will be sent to the teacher to check their login details
-    ![Teacher login details](/app/static/images/readme/teacher_login_details.gif)
-
-- Other admin registration (done only by a logged in admin - not necessarily the superadmin)
-    - Done from the logged-in admin's account **https://Vortex.onrender.com/register/admin**
-    ![Register admin](/app/static/images/readme/register_admin.gif)
-    - An email will be sent to the admin to check their login details
-    ![Teacher login details](/app/static/images/readme/admin_login_details.gif)
-
-## Testing It Locally
-
-- Change directory into the cloned repo:
-
-    ```python
-    $ cd Vortex-online-school-using-flask
-    ```
-- Create and activate a virtual environment
-
-    ```python
-    # Using virtualenvwrapper
-    $ mkvirtualenv venv
-
-    # Normal way
-    $ python3 -m venv venv
-    $ source venv/bin/activate
-    ```
-
-- Install needed dependancies:
-
-    ```python
-    (venv)$ pip3 install -r requirements.txt
-    ```
-
-- Add and update environment variables in a `.env` file as seen in `.env-template`:
-
-    ```python
-    (venv)$ cp .env-template .env
-    ```
-
-- Start the flask server:
-
-    ```python
-    (venv)$ flask run
-    ```
-
-- Check the application in your favourite browser by pasting http://127.0.0.1:5000.
-
-
-## Areas of Improvement
-
-- Notifications of activities taking place within the app
-- Capture user gender during registration to help define how to send an email(Mr. or Ms.)
-- Other user's can request to delete their own accounts
-- Restricted access to subsequent chapters by Employees unless passmark is achieved
-- Marking of Employees attendance by teachers
-- Addition of Employee project quizzes to be assessed by teachers
-- Display of Employee performance in each chapter on Employees and managers' profile pages
-- Display of graphs to indicate Employee performance, Employee enrollment, account activities etc
-- Use of blueprints and factory function
-- Threading of the process of sending emails to make the app faster (you will notice the app slow down when sending emails)
+Areas of Improvement
+Notifications for in-app activities
+Capture user gender during registration for personalized email salutations (Mr./Ms.)
+Allow users to request account deletion
+Restrict access to subsequent lessons until a pass mark is achieved
+Enable teachers to mark employee attendance
+Incorporate employee quizzes as part of the lesson assessments
+Display employee performance metrics on profiles and dashboards
+Use graphs to visualize employee performance, enrollment, and activity
+Refactor the app using blueprints and factory functions
+Implement threading for email-sending processes to improve app speed
