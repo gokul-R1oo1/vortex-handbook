@@ -1,5 +1,4 @@
 
-
 Vortex provides an intuitive and robust platform for managing online learning experiences. It offers features that address the specific needs of administrators, teachers, managers, and employees, ensuring a seamless educational experience.
 
 User Roles and Responsibilities
