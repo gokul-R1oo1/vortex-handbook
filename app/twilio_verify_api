@@ -1,7 +1,6 @@
 from flask import current_app
 from twilio.rest import Client, TwilioException
 
-
 def _get_twilio_verify_client():
     """
     Get the Twilio Verify API client
